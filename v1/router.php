@@ -2,32 +2,37 @@
 
 require_once 'controllers/CalculatorController.php';
 
+$URL = '/api/v1/';
+
 class Router
 {
     public function route($method, $uri)
     {
+        //URL base de la API externa configurable.
+        global $URL;
+
         $numericRegex = '/^-?\d*\.?\d+$/';
         switch ($method) {
             case 'GET':
-                if (strpos($uri, '/api/v1/addition') !== false) {
+                if (strpos($uri, $URL . 'addition') !== false) {
                     $a = isset($_GET['a']) ? $_GET['a'] : '';
                     $b = isset($_GET['b']) ? $_GET['b'] : '';
                     if ($b === '' || $a === '' || !preg_match($numericRegex, $a) || !preg_match($numericRegex, $b)) {
                         $this->notNumber($uri);
                     } else return CalculatorController::getAddition(floatval($a), floatval($b));
-                } elseif (strpos($uri, '/api/v1/substraction') !== false) {
+                } elseif (strpos($uri, $URL . 'substraction') !== false) {
                     $a = isset($_GET['a']) ? $_GET['a'] : '';
                     $b = isset($_GET['b']) ? $_GET['b'] : '';
                     if ($b === '' || $a === '' || !preg_match($numericRegex, $a) || !preg_match($numericRegex, $b)) {
                         $this->notNumber($uri);
                     } else return CalculatorController::getSubstraction(floatval($a), floatval($b));
-                } elseif (strpos($uri, '/api/v1/multiplication') !== false) {
+                } elseif (strpos($uri, $URL . 'multiplication') !== false) {
                     $a = isset($_GET['a']) ? $_GET['a'] : '';
                     $b = isset($_GET['b']) ? $_GET['b'] : '';
                     if ($b === '' || $a === '' || !preg_match($numericRegex, $a) || !preg_match($numericRegex, $b)) {
                         $this->notNumber($uri);
                     } else return CalculatorController::getMultiplication(floatval($a), floatval($b));
-                } elseif (strpos($uri, '/api/v1/division') !== false) {
+                } elseif (strpos($uri, $URL . 'division') !== false) {
                     $a = isset($_GET['a']) ? $_GET['a'] : '';
                     $b = isset($_GET['b']) ? $_GET['b'] : '';
                     if ($b === '' || $a === '' || !preg_match($numericRegex, $a) || !preg_match($numericRegex, $b) || floatval($b) == 0) {
@@ -51,7 +56,8 @@ class Router
 
     private function notNumber($uri)
     {
-        if (strpos($uri, '/api/v1/division') !== false) {
+        global $URL;
+        if (strpos($uri, $URL . 'division') !== false) {
             $response = array(
                 "message" => "Debe ingresar los números correctamente. Solo se aceptan valores numericos."
             );
