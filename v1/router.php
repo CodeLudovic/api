@@ -2,13 +2,13 @@
 
 require_once 'controllers/CalculatorController.php';
 
+//URL base de la API Externa configurable.
 $URL = '/api/v1/';
 
 class Router
 {
     public function route($method, $uri)
     {
-        //URL base de la API externa configurable.
         global $URL;
 
         $numericRegex = '/^-?\d*\.?\d+$/';
@@ -50,7 +50,7 @@ class Router
 
     private function notFound()
     {
-        http_response_code(404);
+        // http_response_code(404);
         echo json_encode(array("message" => "Ruta no encontrada"));
     }
 
@@ -65,7 +65,6 @@ class Router
             if ($_GET['b'] == 0) {
                 $response["additional_message"] = "El valor del divisor no puede ser 0.";
             }
-
             http_response_code(404);
             echo json_encode($response);
         } else {
